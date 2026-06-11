@@ -3,7 +3,7 @@
 Production-grade Platform Engineering stack implementing GitOps, observability, security policies, progressive delivery, and incident-ready operations on Kubernetes.
 ### Kind Cluster Verification
 
-![Cluster Verification](docs/screenshots/01-kind-cluster/Screenshot-194.png)
+![Cluster Verification](docs/screenshots/01-kind-cluster/cluster.png)
 
 *Fresh Kubernetes cluster showing only core system components before platform bootstrap, ensuring a clean and reproducible GitOps setup.*
 
