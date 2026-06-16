@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth
+  
+  labels:
+    app: auth
+    tier: auth
+spec:
+  replicas: 2
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+
+  selector:
+    matchLabels:
+      app: auth
+
+  template:
+    metadata:
+      labels:
+        app: auth
+        tier: auth
+
+    spec:
+      containers:
+      - name: auth
+        image: hashicorp/http-echo:1.0
+        args:
+          - "-text=Authentication Service"
+          - "-listen=:5678"
+        imagePullPolicy: IfNotPresent
+
+        ports:
+        - containerPort: 5678
+
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5678
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 2
+          failureThreshold: 3
+
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5678
+          initialDelaySeconds: 15
+          periodSeconds: 20
+          timeoutSeconds: 2
+          failureThreshold: 3

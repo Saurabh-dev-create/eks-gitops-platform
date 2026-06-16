@@ -2,22 +2,25 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 
 metadata:
-  name: nginx-demo
+  name: frontend-dev
   namespace: argocd
 
 spec:
-  project: default
+  project: platform-project
 
   source:
     repoURL: https://github.com/Saurabh-dev-create/eks-gitops-platform.git
     targetRevision: main
-    path: apps/nginx-demo
+    path: apps/frontend
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: dev
 
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+
+    syncOptions:
+      - CreateNamespace=true
