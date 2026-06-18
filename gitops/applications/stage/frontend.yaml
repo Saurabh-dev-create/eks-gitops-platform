@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+
+metadata:
+  name: frontend-stage
+  namespace: argocd
+
+spec:
+  project: platform-project
+
+  source:
+    repoURL: https://github.com/Saurabh-dev-create/eks-gitops-platform.git
+    targetRevision: main
+    path: apps/frontend
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: stage
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
+    syncOptions:
+      - CreateNamespace=true
