@@ -69,4 +69,4 @@ spec:
       volumes:
       - name: postgres-storage
         persistentVolumeClaim:
-          claimName: postgres-secret
+          claimName: postgres-pvc
