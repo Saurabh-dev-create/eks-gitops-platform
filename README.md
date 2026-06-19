@@ -306,3 +306,43 @@ Key capabilities demonstrated:
 - Rollback-ready deployment strategy
 
 The rollout successfully promoted nginx:1.28 to stable after completing all canary stages and automatically scaled down the previous ReplicaSet.
+
+## Runtime Security with Falco
+
+Falco was deployed as a DaemonSet across all Kubernetes nodes to provide runtime threat detection.
+
+During deployment, Kyverno blocked the Falco installation because required CPU and memory requests/limits were missing. The Helm chart values were updated to comply with cluster governance policies before the deployment was approved.
+
+### Falco Deployment
+
+![Falco Deployment](docs/screenshots/14-security/falco-successful-deployment.png)
+
+Capabilities:
+
+- Runtime security monitoring
+- Kubernetes audit event monitoring
+- Container activity detection
+- Policy-driven deployment enforcement through Kyverno
+- Cluster-wide security visibility
+
+## Runtime Security with Falco
+
+Falco was deployed as a DaemonSet across all Kubernetes nodes to provide runtime threat detection.
+
+A test workload was created and a sensitive file access operation was executed inside the container.
+
+### Runtime Threat Detection
+
+![Falco Runtime Detection](docs/screenshots/14-security/falco-runtime-detection.png)
+
+### Sensitive File Access Simulation
+
+![Falco Shadow Access](docs/screenshots/14-security/falco-shadow-file-access.png)
+
+Falco successfully detected:
+
+- Interactive shell execution inside containers
+- Access to sensitive system files
+- Suspicious runtime activity
+
+This demonstrates runtime security monitoring beyond static image scanning and policy enforcement.
