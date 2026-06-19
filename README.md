@@ -91,3 +91,49 @@ Dashboards & Alerts
 ```
 
 The observability stack enables centralized monitoring, performance analysis, troubleshooting, and operational visibility across the GitOps-managed Kubernetes platform.
+
+## Centralized Logging with Loki & Promtail
+
+The platform implements centralized log aggregation using Grafana Loki and Promtail.
+
+### Architecture
+
+Application Pods
+        ↓
+Container Logs
+        ↓
+Promtail DaemonSet
+        ↓
+Loki
+        ↓
+Grafana Explore
+
+### Features
+
+- Cluster-wide log collection
+- Kubernetes metadata enrichment
+- Namespace-based filtering
+- Application-level log search
+- Centralized troubleshooting
+
+### Example Investigation
+
+Frontend application logs can be queried directly from Grafana Explore using Kubernetes labels.
+
+Example query:
+
+{namespace="dev", app="frontend"}
+
+This allows operators to isolate logs for a specific application without accessing individual pods.
+
+### Screenshot
+
+![Frontend Logs in Grafana Explore](docs/screenshots/05-grafana/application-log-search.png)
+
+### Distributed Tracing with Tempo
+
+OpenTelemetry Collector receives OTLP traces and forwards them to Tempo.
+Grafana provides end-to-end trace visualization, span hierarchy analysis,
+and latency investigation capabilities.
+
+![Tempo Trace Analysis](docs/screenshots/07-tempo/tempo-trace-details.png)
