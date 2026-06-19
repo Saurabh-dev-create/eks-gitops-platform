@@ -262,3 +262,9 @@ The following screenshot demonstrates a successful Blue-Green deployment managed
 Argo Rollouts Deployment Verification
 
 Argo Rollouts successfully created a new ReplicaSet and managed application pods using a Blue-Green deployment strategy.
+
+### Blue-Green Deployment with Argo Rollouts
+
+![Blue-Green Preview Ready](docs/screenshots/09-blue-green/blue-green-preview-ready.png)
+
+*Argo Rollouts deployed a new application version (nginx:1.28) to the preview environment while production traffic continued serving the stable version (nginx:1.27). The rollout entered a paused state with manual promotion enabled, demonstrating a production-grade Blue-Green deployment workflow where new releases can be validated before traffic cutover. Separate active and preview services ensure zero-downtime deployments and safe release validation.*
