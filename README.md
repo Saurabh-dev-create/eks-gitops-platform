@@ -190,3 +190,75 @@ Cluster Resources
 | Background Controller | Continuously evaluates existing resources |
 | Reports Controller | Generates policy compliance reports |
 | Cleanup Controller | Handles automated resource cleanup tasks |
+
+### Policy Enforcement: Resource Governance
+
+![Resource Policy Violation](docs/screenshots/09-kyverno/resource-policy-violation.png)
+
+*Kyverno enforced platform governance by blocking deployment of a non-compliant workload that did not define CPU and memory requests/limits. This prevents uncontrolled resource consumption and ensures workloads adhere to operational standards before reaching the cluster.*
+
+## Progressive Delivery with Argo Rollouts Overview
+
+To enable production-grade deployment strategies, this platform integrates Argo Rollouts for progressive delivery on Kubernetes.
+
+Argo Rollouts extends the native Deployment resource and enables:
+
+Blue-Green Deployments
+Canary Deployments
+Automated Rollbacks
+Controlled Promotions
+Safer Application Releases
+
+This allows application updates to be validated before exposing them to production traffic, reducing deployment risk and minimizing downtime.
+
+Blue-Green Deployment
+
+A Blue-Green deployment strategy was implemented using Argo Rollouts.
+
+Workflow
+Existing application version serves production traffic.
+New version is deployed to a preview environment.
+Validation and testing are performed on the preview version.
+Traffic is promoted to the new version after approval.
+Previous version remains available for rollback if required.
+Rollout Configuration
+Active Service: frontend-active
+Preview Service: frontend-preview
+Replicas: 2
+Auto Promotion: Disabled
+Manual Promotion Enabled
+Benefits
+Zero downtime deployments
+Instant rollback capability
+Safe production releases
+Reduced deployment risk
+Deployment Verification
+
+The rollout controller successfully created and managed a dedicated ReplicaSet for the new application version.
+
+Verification Commands
+kubectl get rollout
+
+kubectl get rs
+
+kubectl get pods
+
+kubectl argo rollouts get rollout frontend-rollout
+Example Output
+NAME               DESIRED
+frontend-rollout   2
+
+ReplicaSet
+frontend-rollout-7cb98c7
+
+Pods
+frontend-rollout-7cb98c7-5hlfl
+frontend-rollout-7cb98c7-98jxr
+Blue-Green Deployment Validation
+
+The following screenshot demonstrates a successful Blue-Green deployment managed by Argo Rollouts.
+
+![blue-green-delivery](docs/screenshots/09-blue-green/blue-green-rollout.png.png)
+Argo Rollouts Deployment Verification
+
+Argo Rollouts successfully created a new ReplicaSet and managed application pods using a Blue-Green deployment strategy.
