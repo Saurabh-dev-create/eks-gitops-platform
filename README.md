@@ -280,3 +280,29 @@ Argo Rollouts successfully created a new ReplicaSet and managed application pods
 ![Blue-Green Promotion Complete](docs/screenshots/09-blue-green/blue-green-promotion-complete.png)
 
 *Argo Rollouts successfully promoted the validated application version from the preview environment to production. Traffic was switched from the stable ReplicaSet to the new ReplicaSet, and the previous version was automatically scaled down. This demonstrates a production-grade Blue-Green deployment strategy with controlled approval, zero downtime, and safe release management.*
+
+### Canary Deployment Initialization
+
+![Canary Deployment](docs/screenshots/10-canary/canary-initial-deployment.png)
+
+*Argo Rollouts deployed a canary-enabled frontend application with four replicas. The rollout controller manages progressive traffic shifting and staged promotion of new versions, enabling safer production releases compared to standard Kubernetes rolling updates.*
+
+## Canary Deployment with Argo Rollouts
+
+Argo Rollouts was implemented to enable progressive delivery and reduce deployment risk.
+
+The rollout strategy gradually shifted traffic to a new application version before promoting it to production.
+
+### Canary Rollout Result
+
+![Canary Rollout](docs/screenshots/10-canary/canary-rollout-success.png)
+
+Key capabilities demonstrated:
+
+- Progressive traffic shifting
+- Controlled release promotion
+- Automatic ReplicaSet management
+- Safe production deployments
+- Rollback-ready deployment strategy
+
+The rollout successfully promoted nginx:1.28 to stable after completing all canary stages and automatically scaled down the previous ReplicaSet.
