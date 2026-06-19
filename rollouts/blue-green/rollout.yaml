@@ -1,0 +1,45 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+
+metadata:
+  name: frontend-rollout
+
+spec:
+  replicas: 2
+
+  revisionHistoryLimit: 3
+
+  selector:
+    matchLabels:
+      app: frontend-rollout
+
+  template:
+    metadata:
+      labels:
+        app: frontend-rollout
+
+    spec:
+      containers:
+      - name: frontend
+
+        image: nginx:1.28
+
+        ports:
+        - containerPort: 80
+
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+
+  strategy:
+    blueGreen:
+
+      activeService: frontend-active
+
+      previewService: frontend-preview
+
+      autoPromotionEnabled: false

@@ -137,3 +137,56 @@ Grafana provides end-to-end trace visualization, span hierarchy analysis,
 and latency investigation capabilities.
 
 ![Tempo Trace Analysis](docs/screenshots/07-tempo/tempo-trace-details.png)
+
+## Security & Governance with Kyverno
+
+### Kyverno Deployment
+
+![Kyverno Components](docs/screenshots/09-kyverno/kyverno-components-running.png)
+
+*Kyverno deployed as the Kubernetes policy engine, providing admission control, policy enforcement, compliance reporting, and governance capabilities across development, staging, and production environments.*
+
+### Platform Governance Architecture
+
+```text
+Developer
+    │
+    ▼
+Git Commit
+    │
+    ▼
+ArgoCD
+    │
+    ▼
+Kubernetes API Server
+    │
+    ▼
+Kyverno Admission Controller
+    │
+    ├── Validate Policies
+    ├── Enforce Security Rules
+    ├── Generate Reports
+    └── Audit Existing Resources
+    │
+    ▼
+Cluster Resources
+```
+
+### Governance Capabilities
+
+- Enforce organization-wide Kubernetes policies
+- Prevent deployment of non-compliant workloads
+- Validate resource requests and limits
+- Enforce application labeling standards
+- Restrict insecure container configurations
+- Generate compliance and policy reports
+- Apply governance consistently across Dev, Stage, and Prod environments
+
+### Installed Components
+
+| Component | Purpose |
+|------------|----------|
+| Admission Controller | Intercepts and validates Kubernetes resources |
+| Background Controller | Continuously evaluates existing resources |
+| Reports Controller | Generates policy compliance reports |
+| Cleanup Controller | Handles automated resource cleanup tasks |
