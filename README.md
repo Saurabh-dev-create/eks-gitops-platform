@@ -203,6 +203,12 @@ Cluster Resources
 
 *Kyverno enforced the cluster security policy by rejecting a Pod that did not specify `runAsNonRoot: true`. Running containers as non-root reduces the risk of privilege escalation and follows Kubernetes security best practices by preventing workloads from executing with root privileges.*
 
+### Policy Enforcement: Disallow Latest Image Tag
+
+![Latest Tag Policy Violation](docs/screenshots/08-kyverno/latest-tag-policy-violation.png)
+
+*Kyverno enforced deployment governance by rejecting a Pod that used the mutable `latest` image tag. Requiring explicit image versions ensures reproducible deployments, supports controlled application releases, and prevents unexpected behavior caused by automatic image updates.*
+
 ## Progressive Delivery with Argo Rollouts Overview
 
 To enable production-grade deployment strategies, this platform integrates Argo Rollouts for progressive delivery on Kubernetes.
