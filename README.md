@@ -142,7 +142,7 @@ and latency investigation capabilities.
 
 ### Kyverno Deployment
 
-![Kyverno Components](docs/screenshots/09-kyverno/kyverno-components-running.png)
+![Kyverno Components](docs/screenshots/08-kyverno/kyverno-components.png)
 
 *Kyverno deployed as the Kubernetes policy engine, providing admission control, policy enforcement, compliance reporting, and governance capabilities across development, staging, and production environments.*
 
