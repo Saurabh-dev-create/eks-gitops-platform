@@ -193,7 +193,7 @@ Cluster Resources
 
 ### Policy Enforcement: Resource Governance
 
-![Resource Policy Violation](docs/screenshots/09-kyverno/resource-policy-violation.png)
+![Resource Policy Violation](docs/screenshots/08-kyverno/resource-policy-violation.png)
 
 *Kyverno enforced platform governance by blocking deployment of a non-compliant workload that did not define CPU and memory requests/limits. This prevents uncontrolled resource consumption and ensures workloads adhere to operational standards before reaching the cluster.*
 
