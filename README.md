@@ -197,6 +197,12 @@ Cluster Resources
 
 *Kyverno enforced platform governance by blocking deployment of a non-compliant workload that did not define CPU and memory requests/limits. This prevents uncontrolled resource consumption and ensures workloads adhere to operational standards before reaching the cluster.*
 
+### Policy Enforcement: Non-Root Containers
+
+![Non-Root Policy Violation](docs/screenshots/08-kyverno/non-root-policy-violation.png)
+
+*Kyverno enforced the cluster security policy by rejecting a Pod that did not specify `runAsNonRoot: true`. Running containers as non-root reduces the risk of privilege escalation and follows Kubernetes security best practices by preventing workloads from executing with root privileges.*
+
 ## Progressive Delivery with Argo Rollouts Overview
 
 To enable production-grade deployment strategies, this platform integrates Argo Rollouts for progressive delivery on Kubernetes.
