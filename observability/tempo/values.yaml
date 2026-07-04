@@ -1,0 +1,19 @@
+tempo:
+  storage:
+    trace:
+      backend: local
+
+persistence:
+  enabled: true
+  size: 5Gi
+
+serviceMonitor:
+  enabled: true
+
+resources: {}
+
+search:
+  enabled: true
+
+metricsGenerator:
+  enabled: true

@@ -1,0 +1,29 @@
+# Secrets
+.env
+.env.*
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+
+# Kubernetes
+kubeconfig
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Kubernetes
+*.bak
+
+# Mac/Linux
+*.swp
