@@ -209,6 +209,12 @@ Cluster Resources
 
 *Kyverno enforced deployment governance by rejecting a Pod that used the mutable `latest` image tag. Requiring explicit image versions ensures reproducible deployments, supports controlled application releases, and prevents unexpected behavior caused by automatic image updates.*
 
+### Policy Enforcement: Required Labels
+
+![Required Labels Policy Violation](docs/screenshots/08-kyverno/required-labels-policy-violation.png)
+
+*Kyverno enforced organizational governance by rejecting a Pod that did not define the required `app` and `environment` labels. Standardized labels improve workload identification, enable reliable service discovery, support monitoring and GitOps workflows, and simplify operational management across Kubernetes environments.*
+
 ## Progressive Delivery with Argo Rollouts Overview
 
 To enable production-grade deployment strategies, this platform integrates Argo Rollouts for progressive delivery on Kubernetes.
