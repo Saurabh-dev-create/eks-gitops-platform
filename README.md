@@ -215,6 +215,12 @@ Cluster Resources
 
 *Kyverno enforced organizational governance by rejecting a Pod that did not define the required `app` and `environment` labels. Standardized labels improve workload identification, enable reliable service discovery, support monitoring and GitOps workflows, and simplify operational management across Kubernetes environments.*
 
+### Policy Enforcement: Require Liveness Probe
+
+![Liveness Probe Policy Violation](docs/screenshots/08-kyverno/liveness-probe-policy-violation.png)
+
+*Kyverno enforced workload health standards by rejecting a Pod that did not define a `livenessProbe`. Requiring liveness probes enables Kubernetes to detect unhealthy containers and automatically restart them, improving application reliability and reducing manual intervention.*
+
 ## Progressive Delivery with Argo Rollouts Overview
 
 To enable production-grade deployment strategies, this platform integrates Argo Rollouts for progressive delivery on Kubernetes.
