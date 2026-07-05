@@ -232,6 +232,12 @@ Cluster Resources
 
 *Kyverno enforced workload health standards by rejecting a Pod that did not define a `livenessProbe`. Requiring liveness probes enables Kubernetes to detect unhealthy containers and automatically restart them, improving application reliability and reducing manual intervention.*
 
+### Policy Enforcement: Require Readiness Probe
+
+![Readiness Probe Policy Violation](docs/screenshots/08-kyverno/kyverno-readiness-policy.png)
+
+*Kyverno enforced workload readiness standards by rejecting a Pod that did not define a `readinessProbe`. Requiring readiness probes ensures that traffic is routed only to containers that are fully initialized and ready to serve requests, improving application availability and preventing requests from reaching unhealthy or unprepared workloads.*
+
 ## Progressive Delivery with Argo Rollouts Overview
 
 To enable production-grade deployment strategies, this platform integrates Argo Rollouts for progressive delivery on Kubernetes.

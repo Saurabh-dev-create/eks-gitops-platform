@@ -54,7 +54,7 @@ echo "----------------------------------------"
 
 helm upgrade --install monitoring prometheus-community/kube-prometheus-stack \
     -n monitoring \
-    -f observability/prometheus/custom-values.yaml \
+    -f observability/prometheus/values.yaml \
     --wait
 
 kubectl rollout status deployment/monitoring-grafana \
