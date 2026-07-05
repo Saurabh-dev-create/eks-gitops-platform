@@ -15,16 +15,25 @@ spec:
           kinds:
           - Pod
 
-    validate:
-      message: "CPU and memory requests/limits are required."
+    exclude:
+      any:
+      - resources:
+          namespaces:
+          - kube-system
+          - local-path-storage
+          - argocd
+          - kyverno
+          - monitoring
 
+    validate:
+      message: CPU and memory requests/limits are required.
       pattern:
         spec:
           containers:
           - resources:
               requests:
-                memory: "?*"
                 cpu: "?*"
+                memory: "?*"
               limits:
-                memory: "?*"
                 cpu: "?*"
+                memory: "?*"

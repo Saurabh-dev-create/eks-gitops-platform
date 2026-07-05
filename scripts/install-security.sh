@@ -82,16 +82,30 @@ echo "Installed Policies"
 
 kubectl get clusterpolicy
 
+
+
 ############################################
-# Falco (Placeholder)
+# Install Falco
 ############################################
 
 echo
 echo "----------------------------------------"
-echo "Falco"
+echo "Installing Falco..."
 echo "----------------------------------------"
 
-echo "Falco installation will be enabled after Falco configuration is finalized."
+kubectl get namespace falco >/dev/null 2>&1 || \
+kubectl create namespace falco
+
+helm upgrade --install falco \
+    falcosecurity/falco \
+    -n falco \
+    -f security/falco/custom-values.yaml \
+    --wait
+
+kubectl rollout status daemonset/falco \
+    -n falco
+
+echo "✓ Falco Ready"
 
 ############################################
 # Falcosidekick (Placeholder)
