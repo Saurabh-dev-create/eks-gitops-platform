@@ -1,6 +1,17 @@
 # Enterprise Platform Engineering
 
 Production-grade Platform Engineering stack implementing GitOps, observability, security policies, progressive delivery, and incident-ready operations on Kubernetes.
+# Automation Scripts
+
+| Script | Purpose |
+|---------|---------|
+| cleanup.sh | Deletes the existing Kind cluster |
+| create-kind-cluster.sh | Creates a 3-node Kind cluster |
+| install-argocd.sh | Installs ArgoCD |
+| install-monitoring.sh | Installs Prometheus, Grafana, Loki, Alloy, Tempo and OpenTelemetry |
+| install-security.sh | Installs Kyverno and applies security policies |
+| bootstrap.sh | Builds the complete platform from scratch |
+
 ### Kind Cluster Verification
 
 ![Cluster Verification](docs/screenshots/01-kind-cluster/cluster.png)
