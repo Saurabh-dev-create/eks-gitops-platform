@@ -387,3 +387,27 @@ Falco successfully detected:
 - Suspicious runtime activity
 
 This demonstrates runtime security monitoring beyond static image scanning and policy enforcement.
+
+## 🚨 Incident Detection & Alerting
+
+The platform continuously monitors Kubernetes workloads using Prometheus. When a pod enters a `CrashLoopBackOff` state, a custom alert rule is triggered and Alertmanager automatically sends a Slack notification to the operations team.
+
+### Features
+
+- Real-time CrashLoopBackOff detection
+- Custom Prometheus alert rules
+- Alertmanager integration
+- Slack notifications with runbook links
+- Automatic resolved notifications
+
+### Workflow
+
+```text
+Kubernetes → Prometheus → Alertmanager → Slack
+```
+
+### Demo
+
+| Prometheus Alert | Slack Notification |
+|------------------|--------------------|
+| ![](docs/screenshots/14-security/Screenshot (36).png) | ![](docs/screenshots/14-security/Screenshot (35).png) |

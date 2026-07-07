@@ -1,15 +1,18 @@
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: AlertmanagerConfig
+
 metadata:
   name: slack-config
   namespace: monitoring
   labels:
     release: monitoring
+
 spec:
   route:
     receiver: slack
     groupBy:
       - alertname
+      - namespace
     groupWait: 10s
     groupInterval: 30s
     repeatInterval: 2h
@@ -21,18 +24,27 @@ spec:
             name: alertmanager-slack
             key: webhook
 
-          channel: "#alerts"
+          channel: "#security-alerts"
 
           sendResolved: true
 
           title: "{{ .CommonLabels.alertname }}"
 
           text: |
-            *Alert:* {{ .CommonLabels.alertname }}
             *Severity:* {{ .CommonLabels.severity }}
+            *Namespace:* {{ .CommonLabels.namespace }}
+            *Pod:* {{ .CommonLabels.pod }}
+            *Container:* {{ .CommonLabels.container }}
 
             {{ range .Alerts }}
+            *Summary:*
             {{ .Annotations.summary }}
 
+            *Description:*
             {{ .Annotations.description }}
+
+            *Runbook:*
+            {{ .Annotations.runbook_url }}
+
+            ---
             {{ end }}

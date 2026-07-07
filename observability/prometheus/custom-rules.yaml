@@ -1,0 +1,36 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+
+metadata:
+  name: custom-alert-rules
+  namespace: monitoring
+  labels:
+    release: monitoring
+
+spec:
+  groups:
+    - name: custom.rules
+
+      rules:
+        - alert: PodCrashLoopingFast
+
+          expr: |
+            max_over_time(
+              kube_pod_container_status_waiting_reason{
+                reason="CrashLoopBackOff"
+              }[1m]
+            ) >= 1
+
+          for: 1m
+
+          labels:
+            severity: critical
+
+          annotations:
+            summary: "Pod is CrashLoopBackOff"
+
+            description: |
+              Pod {{ $labels.namespace }}/{{ $labels.pod }}
+              is in CrashLoopBackOff.
+
+            runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubepodcrashlooping
