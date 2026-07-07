@@ -410,4 +410,4 @@ Kubernetes → Prometheus → Alertmanager → Slack
 
 | Prometheus Alert | Slack Notification |
 |------------------|--------------------|
-| ![](docs/screenshots/14-security/Screenshot (36).png) | ![](docs/screenshots/14-security/Screenshot (35).png) |
+| ![](docs/screenshots/14-security/prometheus-alert-firing.png) | ![](docs/screenshots/14-security/slack-notification.png) |
