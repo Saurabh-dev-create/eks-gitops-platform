@@ -27,7 +27,7 @@ jobs:
           docker build -t frontend:${{ github.sha }} .
 
       - name: Run Trivy Scan
-        uses: uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@master
         with:
           image-ref: frontend:${{ github.sha }}
           format: table
