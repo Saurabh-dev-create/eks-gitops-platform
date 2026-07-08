@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: nginx:1.27
+        image: 882640845424.dkr.ecr.ap-south-1.amazonaws.com/frontend:423f6978cb52c5dcc133c42b933724cb2c7f19cc
         imagePullPolicy: IfNotPresent
 
         ports:
