@@ -1,0 +1,12 @@
+{
+  "name": "platform-auth",
+  "version": "1.0.0",
+  "description": "Platform Authentication Service",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

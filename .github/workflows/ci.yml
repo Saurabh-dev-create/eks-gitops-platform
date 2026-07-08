@@ -5,17 +5,25 @@ on:
     branches:
       - main
     paths-ignore:
-      - 'apps/frontend/deployment.yaml'
+      - 'apps/**/deployment.yaml'
   pull_request:
 
 jobs:
-  frontend-ci:
-    name: Frontend CI
+  platform-ci:
+    name: CI - ${{ matrix.app }}
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        app:
+          - frontend
+          - api
+          - auth
 
     defaults:
       run:
-        working-directory: apps/frontend
+        working-directory: apps/${{ matrix.app }}
 
     steps:
       - name: Checkout Repository
@@ -24,14 +32,15 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build Frontend Docker Image
+      - name: Build Docker Image
         run: |
-          docker build -t frontend:${{ github.sha }} .
+          docker build \
+            -t ${{ matrix.app }}:${{ github.sha }} .
 
       - name: Run Trivy Scan
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: frontend:${{ github.sha }}
+          image-ref: ${{ matrix.app }}:${{ github.sha }}
           format: table
           exit-code: "0"
           ignore-unfixed: true
@@ -53,4 +62,5 @@ jobs:
           kustomize build .
 
       - name: CI Completed
-        run: echo "Frontend CI completed successfully."
+        run: |
+          echo "✅ ${{ matrix.app }} CI completed successfully."
