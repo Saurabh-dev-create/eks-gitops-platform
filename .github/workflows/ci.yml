@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'apps/frontend/deployment.yaml'
   pull_request:
 
 jobs:
