@@ -30,7 +30,7 @@ spec:
         - name: ecr-secret
       containers:
       - name: api
-        image: 882640845424.dkr.ecr.ap-south-1.amazonaws.com/api:d92a3af88aa89b3b13e5e21d1b135a67bcb57f5d
+        image: 882640845424.dkr.ecr.ap-south-1.amazonaws.com/api:883ea91a03acb92dd7358c0b75f2670e825ab64f
         
         imagePullPolicy: IfNotPresent
 
