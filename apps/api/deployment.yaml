@@ -31,9 +31,7 @@ spec:
       containers:
       - name: api
         image: 882640845424.dkr.ecr.ap-south-1.amazonaws.com/api:62a75bc5edf916b375be15d42a0a9b9d8c8e0940
-        args:
-          - "-text=Platform API"
-          - "-listen=:5678"
+        
         imagePullPolicy: IfNotPresent
 
         ports:
@@ -51,7 +49,7 @@ spec:
           httpGet:
             path: /
             port: 5678
-          initialDelaySeconds: 5
+          initialDelaySecionds: 5
           periodSeconds: 10
           timeoutSeconds: 2
           failureThreshold: 3
