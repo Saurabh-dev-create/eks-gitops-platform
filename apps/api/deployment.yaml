@@ -35,7 +35,7 @@ spec:
         imagePullPolicy: IfNotPresent
 
         ports:
-        - containerPort: 5678
+        - containerPort: 3000
 
         resources:
           requests:
@@ -47,17 +47,17 @@ spec:
 
         readinessProbe:
           httpGet:
-            path: /
-            port: 5678
-          initialDelaySecionds: 5
+            path: /health
+            port: 3000
+          initialDelaySeconds: 5
           periodSeconds: 10
           timeoutSeconds: 2
           failureThreshold: 3
 
         livenessProbe:
           httpGet:
-            path: /
-            port: 5678
+            path: /health
+            port: 3000
           initialDelaySeconds: 15
           periodSeconds: 20
           timeoutSeconds: 2
