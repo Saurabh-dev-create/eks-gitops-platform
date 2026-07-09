@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
       - name: auth
-        image: hashicorp/http-echo:1.0
+        image: 882640845424.dkr.ecr.ap-south-1.amazonaws.com/auth:62a75bc5edf916b375be15d42a0a9b9d8c8e0940
         args:
           - "-text=Authentication Service"
           - "-listen=:5678"

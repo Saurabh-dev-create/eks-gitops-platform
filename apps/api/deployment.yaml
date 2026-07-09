@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: hashicorp/http-echo:1.0
+        image: 882640845424.dkr.ecr.ap-south-1.amazonaws.com/api:62a75bc5edf916b375be15d42a0a9b9d8c8e0940
         args:
           - "-text=Platform API"
           - "-listen=:5678"
