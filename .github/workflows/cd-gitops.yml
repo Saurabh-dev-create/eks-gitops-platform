@@ -2,7 +2,8 @@ name: Platform CD
 
 on:
   workflow_run:
-    workflows: ["Platform CI"]
+    workflows:
+      - Platform CI
     types:
       - completed
 
@@ -13,7 +14,9 @@ jobs:
   platform-cd:
     if: >
       github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.head_branch == 'main'
+      (github.event.workflow_run.head_branch == 'dev' ||
+       github.event.workflow_run.head_branch == 'stage' ||
+       github.event.workflow_run.head_branch == 'prod')
 
     runs-on: ubuntu-latest
 
@@ -21,12 +24,13 @@ jobs:
       AWS_REGION: ${{ secrets.AWS_REGION }}
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
       IMAGE_TAG: ${{ github.event.workflow_run.head_sha }}
+      TARGET_BRANCH: ${{ github.event.workflow_run.head_branch }}
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout Target Branch
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ env.TARGET_BRANCH }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Configure AWS Credentials
@@ -40,70 +44,49 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       ####################################################
-      # FRONTEND
+      # Build Images
       ####################################################
 
-      - name: Build Frontend Image
+      - name: Build Frontend
         run: |
           docker build \
             -t frontend:$IMAGE_TAG \
             ./apps/frontend
 
-      - name: Tag Frontend Image
-        run: |
-          docker tag \
-            frontend:$IMAGE_TAG \
-            $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/frontend:$IMAGE_TAG
-
-      - name: Push Frontend Image
-        run: |
-          docker push \
-            $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/frontend:$IMAGE_TAG
-
-      ####################################################
-      # API
-      ####################################################
-
-      - name: Build API Image
+      - name: Build API
         run: |
           docker build \
             -t api:$IMAGE_TAG \
             ./apps/api
 
-      - name: Tag API Image
-        run: |
-          docker tag \
-            api:$IMAGE_TAG \
-            $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/api:$IMAGE_TAG
-
-      - name: Push API Image
-        run: |
-          docker push \
-            $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/api:$IMAGE_TAG
-
-      ####################################################
-      # AUTH
-      ####################################################
-
-      - name: Build Auth Image
+      - name: Build Auth
         run: |
           docker build \
             -t auth:$IMAGE_TAG \
             ./apps/auth
 
-      - name: Tag Auth Image
-        run: |
-          docker tag \
-            auth:$IMAGE_TAG \
-            $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/auth:$IMAGE_TAG
+      ####################################################
+      # Tag Images
+      ####################################################
 
-      - name: Push Auth Image
+      - name: Tag Images
         run: |
-          docker push \
-            $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/auth:$IMAGE_TAG
+          docker tag frontend:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/frontend:$IMAGE_TAG
+          docker tag api:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/api:$IMAGE_TAG
+          docker tag auth:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/auth:$IMAGE_TAG
 
       ####################################################
-      # UPDATE GITOPS MANIFESTS
+      # Push Images
+      ####################################################
+
+      - name: Push Images
+        run: |
+          docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/frontend:$IMAGE_TAG
+          docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/api:$IMAGE_TAG
+          docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/auth:$IMAGE_TAG
+
+      ####################################################
+      # Update GitOps Manifests
       ####################################################
 
       - name: Update Frontend Deployment
@@ -119,31 +102,29 @@ jobs:
           sed -i "s|image:.*|image: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/auth:$IMAGE_TAG|" apps/auth/deployment.yaml
 
       ####################################################
-      # SINGLE COMMIT
+      # Commit Changes
       ####################################################
 
-      - name: Commit Manifest Changes
+      - name: Commit Manifest Updates
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add \
-            apps/frontend/deployment.yaml \
-            apps/api/deployment.yaml \
-            apps/auth/deployment.yaml
+          git add apps/frontend/deployment.yaml
+          git add apps/api/deployment.yaml
+          git add apps/auth/deployment.yaml
+
           if git diff --cached --quiet; then
-            echo "No manifest changes to commit."
+            echo "No manifest changes."
             exit 0
           fi
-
-          
 
           git commit -m "Update application images to $IMAGE_TAG [skip ci]"
 
       ####################################################
-      # SINGLE PUSH
+      # Push Back To Same Branch
       ####################################################
 
       - name: Push Changes
         run: |
-          git push origin main
+          git push origin $TARGET_BRANCH

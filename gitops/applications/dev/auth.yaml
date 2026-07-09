@@ -10,7 +10,7 @@ spec:
 
   source:
     repoURL: https://github.com/Saurabh-dev-create/eks-gitops-platform.git
-    targetRevision: main
+    targetRevision: dev
     path: apps/auth
 
   destination:
