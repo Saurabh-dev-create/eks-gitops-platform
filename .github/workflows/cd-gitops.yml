@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 jobs:
-  frontend-cd:
+  platform-cd:
     if: >
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.head_branch == 'main'
@@ -20,7 +20,6 @@ jobs:
     env:
       AWS_REGION: ${{ secrets.AWS_REGION }}
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-      ECR_REPOSITORY: frontend
       IMAGE_TAG: ${{ github.event.workflow_run.head_sha }}
 
     steps:
@@ -38,40 +37,112 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Login to Amazon ECR
-        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build Docker Image
+      ####################################################
+      # FRONTEND
+      ####################################################
+
+      - name: Build Frontend Image
         run: |
           docker build \
-            -t $ECR_REPOSITORY:$IMAGE_TAG \
+            -t frontend:$IMAGE_TAG \
             ./apps/frontend
 
-      - name: Tag Image
+      - name: Tag Frontend Image
         run: |
           docker tag \
-            $ECR_REPOSITORY:$IMAGE_TAG \
-            $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+            frontend:$IMAGE_TAG \
+            $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/frontend:$IMAGE_TAG
 
-      - name: Push Image
+      - name: Push Frontend Image
         run: |
           docker push \
-            $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+            $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/frontend:$IMAGE_TAG
 
-      - name: Update Kubernetes Manifest
+      ####################################################
+      # API
+      ####################################################
+
+      - name: Build API Image
         run: |
-          sed -i "s|image:.*|image: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG|" apps/frontend/deployment.yaml
+          docker build \
+            -t api:$IMAGE_TAG \
+            ./apps/api
 
-      - name: Commit Manifest
+      - name: Tag API Image
+        run: |
+          docker tag \
+            api:$IMAGE_TAG \
+            $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/api:$IMAGE_TAG
+
+      - name: Push API Image
+        run: |
+          docker push \
+            $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/api:$IMAGE_TAG
+
+      ####################################################
+      # AUTH
+      ####################################################
+
+      - name: Build Auth Image
+        run: |
+          docker build \
+            -t auth:$IMAGE_TAG \
+            ./apps/auth
+
+      - name: Tag Auth Image
+        run: |
+          docker tag \
+            auth:$IMAGE_TAG \
+            $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/auth:$IMAGE_TAG
+
+      - name: Push Auth Image
+        run: |
+          docker push \
+            $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/auth:$IMAGE_TAG
+
+      ####################################################
+      # UPDATE GITOPS MANIFESTS
+      ####################################################
+
+      - name: Update Frontend Deployment
+        run: |
+          sed -i "s|image:.*|image: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/frontend:$IMAGE_TAG|" apps/frontend/deployment.yaml
+
+      - name: Update API Deployment
+        run: |
+          sed -i "s|image:.*|image: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/api:$IMAGE_TAG|" apps/api/deployment.yaml
+
+      - name: Update Auth Deployment
+        run: |
+          sed -i "s|image:.*|image: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/auth:$IMAGE_TAG|" apps/auth/deployment.yaml
+
+      ####################################################
+      # SINGLE COMMIT
+      ####################################################
+
+      - name: Commit Manifest Changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add apps/frontend/deployment.yaml
+          git add \
+            apps/frontend/deployment.yaml \
+            apps/api/deployment.yaml \
+            apps/auth/deployment.yaml
+          if git diff --cached --quiet; then
+            echo "No manifest changes to commit."
+            exit 0
+          fi
 
-          git diff --cached --quiet && exit 0
+          
 
-          git commit -m "Update frontend image to $IMAGE_TAG [skip ci]"
+          git commit -m "Update application images to $IMAGE_TAG [skip ci]"
+
+      ####################################################
+      # SINGLE PUSH
+      ####################################################
 
       - name: Push Changes
         run: |
