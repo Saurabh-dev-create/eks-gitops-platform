@@ -12,6 +12,152 @@ Production-grade Platform Engineering stack implementing GitOps, observability, 
 | install-security.sh | Installs Kyverno and applies security policies |
 | bootstrap.sh | Builds the complete platform from scratch |
 
+---
+
+# Terraform Remote State Management
+
+Before provisioning the Kubernetes platform, Terraform bootstraps a production-ready remote backend for infrastructure state management.
+
+The backend consists of:
+
+- Amazon S3 for centralized Terraform state storage
+- DynamoDB for distributed state locking
+- Bucket Versioning
+- Server-side Encryption (AES-256)
+
+This enables safe team collaboration by preventing concurrent Terraform operations and preserving infrastructure state history.
+
+---
+
+## Architecture
+
+```text
+Terraform
+     │
+     ▼
+Bootstrap Infrastructure
+     │
+     ├────────────► Amazon S3
+     │               Terraform State
+     │
+     └────────────► DynamoDB
+                     State Lock
+```
+
+---
+
+## Terraform Initialization
+
+Terraform downloads providers and initializes the working directory.
+
+```bash
+cd infrastructure/terraform/bootstrap
+
+terraform init
+```
+
+![Terraform Init](docs/screenshots/00-terraform/terraform-init.png)
+
+---
+
+## Configuration Validation
+
+Terraform validates the configuration before any infrastructure changes are applied.
+
+```bash
+terraform validate
+```
+
+## Execution Plan
+
+Terraform generates an execution plan showing all resources that will be provisioned.
+
+Resources created:
+
+- Amazon S3 Bucket
+- Bucket Versioning
+- Server-side Encryption
+- DynamoDB Lock Table
+
+```bash
+terraform plan
+```
+
+![Terraform Plan](docs/screenshots/00-terraform/terraform-plan.png)
+
+---
+
+## Infrastructure Provisioning
+
+Terraform provisions the backend resources.
+
+```bash
+terraform apply
+```
+
+Outputs
+
+```
+state_bucket = saurabh-eks-gitops-terraform-state
+
+lock_table = terraform-state-lock
+```
+
+![Terraform Apply](docs/screenshots/00-terraform/terraform-apply.png)
+
+---
+
+## Amazon S3 Remote State
+
+Terraform state is stored in an encrypted and versioned Amazon S3 bucket.
+
+Features
+
+- Centralized remote state
+- Bucket Versioning
+- AES-256 Server-side Encryption
+- Team collaboration
+- Disaster recovery
+
+![S3 Backend](docs/screenshots/00-terraform/s3-backend.png)
+
+---
+
+## DynamoDB State Locking
+
+Terraform uses DynamoDB to ensure only one infrastructure operation modifies the state file at a time.
+
+Benefits
+
+- Prevents simultaneous `terraform apply`
+- Eliminates state corruption
+- Supports collaborative Infrastructure as Code workflows
+
+Partition Key
+
+```
+LockID
+```
+
+Billing Mode
+
+```
+On-Demand
+```
+
+![DynamoDB Locking](docs/screenshots/00-terraform/dynamodb-lock.png)
+
+---
+
+## Production Benefits
+
+- Remote Terraform state
+- Distributed state locking
+- Version history
+- Server-side encryption
+- Safe multi-user infrastructure provisioning
+- Production-ready Infrastructure as Code workflow
+
 ### Kind Cluster Verification
 
 ![Cluster Verification](docs/screenshots/01-kind-cluster/cluster.png)
