@@ -1,7 +1,9 @@
 variable "aws_region" {
   default = "ap-south-1"
 }
-
+variable "azs" {
+  type = list(string)
+}
 variable "cluster_name" {
   default = "enterprise-platform"
 }
@@ -35,4 +37,14 @@ variable "max_size" {
 }
 variable "capacity_type" {
   default = "ON_DEMAND"
+}
+variable "environment" {
+  default = "platform"
+}
+variable "private_subnets" {
+  type = list(string)
+}
+
+variable "public_subnets" {
+  type = list(string)
 }

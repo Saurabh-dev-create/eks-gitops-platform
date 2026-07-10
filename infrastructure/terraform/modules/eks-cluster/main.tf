@@ -8,30 +8,21 @@ module "vpc" {
 
   cidr = var.vpc_cidr
 
-  azs = [
-    "ap-south-1a",
-    "ap-south-1b"
-  ]
+  azs = var.azs
 
-  private_subnets = [
-    "10.0.1.0/24",
-    "10.0.2.0/24"
-  ]
+  private_subnets = var.private_subnets
 
-  public_subnets = [
-    "10.0.101.0/24",
-    "10.0.102.0/24"
-  ]
+  public_subnets = var.public_subnets
 
   public_subnet_tags = {
-  "kubernetes.io/role/elb" = "1"
-  "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+    "kubernetes.io/role/elb"                    = "1"
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
   }
 
   private_subnet_tags = {
-  "kubernetes.io/role/internal-elb" = "1"
-  "kubernetes.io/cluster/${var.cluster_name}" = "shared"
- }
+    "kubernetes.io/role/internal-elb"           = "1"
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+  }
 
   enable_nat_gateway = true
 
@@ -43,7 +34,7 @@ module "vpc" {
 
   tags = {
     Project     = "Enterprise Platform"
-    Environment = "Production"
+    Environment = var.environment
     Terraform   = "true"
   }
 
@@ -66,12 +57,34 @@ module "eks" {
 
   enable_cluster_creator_admin_permissions = true
 
+  addons = {
+
+  vpc-cni = {
+    most_recent   = true
+    before_compute = true
+  }
+
+  eks-pod-identity-agent = {
+    most_recent = true
+  }
+
+  coredns = {
+    most_recent = true
+  }
+
+  kube-proxy = {
+    most_recent = true
+  }
+
+ }
+
+
   eks_managed_node_groups = {
 
-    platform = {
+    (var.environment) = {
 
       instance_types = [var.node_instance_type]
-      capacity_type = var.capacity_type
+      capacity_type  = var.capacity_type
 
       min_size = var.min_size
 
@@ -85,9 +98,9 @@ module "eks" {
 
   tags = {
 
-    Project = "Enterprise Platform"
-
-    Terraform = "true"
+    Project     = "Enterprise Platform"
+    Environment = var.environment
+    Terraform   = "true"
 
   }
 

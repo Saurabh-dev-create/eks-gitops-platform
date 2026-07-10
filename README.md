@@ -14,6 +14,8 @@ Production-grade Platform Engineering stack implementing GitOps, observability, 
 
 ---
 
+
+
 # Terraform Remote State Management
 
 Before provisioning the Kubernetes platform, Terraform bootstraps a production-ready remote backend for infrastructure state management.
@@ -157,6 +159,80 @@ On-Demand
 - Server-side encryption
 - Safe multi-user infrastructure provisioning
 - Production-ready Infrastructure as Code workflow
+
+# Enterprise Terraform Structure
+
+The infrastructure code is organized using reusable Terraform modules and environment-specific configurations. This layout enables consistent provisioning of multiple Kubernetes clusters while keeping the infrastructure code modular and maintainable.
+
+Repository Structure
+
+```text
+terraform/
+├── bootstrap/
+├── modules/
+│   └── eks-cluster/
+└── environments/
+    ├── platform/
+    ├── dev/
+    ├── stage/
+    ├── prod/
+    └── disaster-recovery/
+```
+
+Benefits
+
+- Reusable Terraform modules
+- Environment-specific configuration
+- Remote state management
+- Scalable multi-cluster deployments
+- Production-ready Infrastructure as Code
+
+![Terraform Structure](docs/screenshots/00-terraform/terraform-enterprise-layout.png)
+
+## Terraform Initialization
+
+Terraform initializes the remote backend, downloads required providers and modules, and prepares the working directory for infrastructure provisioning.
+
+```bash
+terraform init
+```
+
+![Terraform Init](docs/screenshots/00-terraform/terraform-init.png)
+
+---
+## Infrastructure Planning
+
+Terraform generates an execution plan that previews the infrastructure before any resources are created. This allows changes to be reviewed safely before deployment.
+
+```bash
+terraform plan
+```
+
+The plan provisions:
+
+- Amazon VPC
+- Multi-AZ Networking
+- Amazon EKS Cluster
+- Managed Node Group
+- Supporting AWS Resources
+
+![Terraform Plan](docs/screenshots/00-terraform/terraform-plan.png)
+
+---
+## Production EKS Cluster Provisioning
+
+Terraform provisions a production-ready Amazon EKS cluster including:
+
+- Managed Node Groups
+- VPC
+- NAT Gateway
+- IAM Roles
+- OIDC Provider
+- VPC CNI
+- CoreDNS
+- kube-proxy
+- EKS Pod Identity Agent
+---
 
 ### Kind Cluster Verification
 
