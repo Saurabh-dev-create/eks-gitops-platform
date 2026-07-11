@@ -59,24 +59,29 @@ module "eks" {
 
   addons = {
 
-  vpc-cni = {
-    most_recent   = true
-    before_compute = true
-  }
+    vpc-cni = {
+      most_recent    = true
+      before_compute = true
+    }
 
-  eks-pod-identity-agent = {
+    eks-pod-identity-agent = {
+      most_recent = true
+    }
+
+    coredns = {
+      most_recent = true
+    }
+
+    kube-proxy = {
+      most_recent = true
+    }
+
+    aws-ebs-csi-driver = {
     most_recent = true
+   }
+
   }
 
-  coredns = {
-    most_recent = true
-  }
-
-  kube-proxy = {
-    most_recent = true
-  }
-
- }
 
 
   eks_managed_node_groups = {
@@ -93,7 +98,6 @@ module "eks" {
       desired_size = var.desired_size
 
     }
-
   }
 
   tags = {
@@ -103,5 +107,5 @@ module "eks" {
     Terraform   = "true"
 
   }
-
 }
+

@@ -11,12 +11,12 @@ setup_helm_repos
 log "Installing Loki..."
 
 helm upgrade --install loki \
-grafana/loki \
--n monitoring \
--f values/loki-values.yaml \
---version 6.42.0 \
---wait \
---timeout 20m \
---atomic
+  grafana/loki \
+  --namespace monitoring \
+  --version 5.48.0 \
+  -f "${SCRIPT_DIR}/values/loki-values.yaml" \
+  --wait \
+  --timeout 20m 
+  
 
 success "Loki Installed Successfully."

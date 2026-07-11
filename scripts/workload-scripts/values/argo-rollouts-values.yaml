@@ -1,0 +1,14 @@
+dashboard:
+  enabled: true
+
+controller:
+  replicas: 1
+
+service:
+  type: ClusterIP
+
+metrics:
+  enabled: true
+
+serviceMonitor:
+  enabled: false

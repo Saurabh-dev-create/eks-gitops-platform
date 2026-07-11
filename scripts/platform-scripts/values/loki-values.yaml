@@ -3,8 +3,25 @@ deploymentMode: SingleBinary
 loki:
   auth_enabled: false
 
+  commonConfig:
+    replication_factor: 1
+
+  storage:
+    type: filesystem
+
 singleBinary:
   replicas: 1
+
+  persistence:
+    enabled: false
+
+  extraVolumes:
+    - name: storage
+      emptyDir: {}
+
+  extraVolumeMounts:
+    - name: storage
+      mountPath: /var/loki
 
 backend:
   replicas: 0
@@ -24,9 +41,9 @@ chunksCache:
 resultsCache:
   enabled: false
 
-test:
-  enabled: false
-
 monitoring:
   selfMonitoring:
     enabled: false
+
+test:
+  enabled: false
