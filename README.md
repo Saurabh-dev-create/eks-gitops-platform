@@ -1,6 +1,75 @@
 # Enterprise Platform Engineering
 
 Production-grade Platform Engineering stack implementing GitOps, observability, security policies, progressive delivery, and incident-ready operations on Kubernetes.
+Enterprise Multi-Cluster Kubernetes Platform
+
+This platform implements a production-grade multi-cluster Kubernetes architecture on Amazon EKS using Infrastructure as Code, GitOps, centralized observability, policy-driven security, and progressive delivery.
+
+The platform consists of a dedicated Platform Cluster that manages the Kubernetes platform and multiple environment clusters responsible for running application workloads across development, staging, production, and disaster recovery environments.
+
+Amazon EKS Clusters
+
+Terraform provisions independent Amazon EKS clusters for platform management, application environments, and disaster recovery. Each cluster has a dedicated responsibility within the platform while remaining centrally managed through GitOps.
+
+Cluster	Purpose
+Platform	GitOps, Monitoring, Logging, Tracing and Alerting
+Development	Feature development and testing
+Staging	Pre-production validation
+Production	Live production workloads
+Disaster Recovery	Multi-region production replica
+Screenshot
+![Amazon EKS Multi-Cluster Platform](docs/screenshots/10-platform/aws-eks-multi-clusters.png)
+
+Multi-Cluster Environment Verification
+
+The platform provisions multiple Amazon EKS clusters using Terraform to separate platform management, application workloads, and disaster recovery. Each cluster is independently managed while remaining part of the same GitOps platform.
+
+Cluster Distribution
+Cluster	Region	Purpose
+Platform Cluster	ap-south-1	Centralized Platform Management
+Dev Cluster	ap-south-1	Development Environment
+Stage Cluster	ap-south-1	Pre-Production Validation
+Prod Cluster	ap-south-1	Production Workloads
+DR Cluster	ap-southeast-1	Multi-Region Disaster Recovery
+Amazon EKS Cluster Verification
+
+The AWS CLI confirms that all production environment clusters have been successfully provisioned in the primary region, while the Disaster Recovery cluster is deployed in a separate AWS Region for business continuity.
+
+aws eks list-clusters --region ap-south-1
+
+aws eks list-clusters --region ap-southeast-1
+Kubernetes Context Management
+
+The local kubeconfig is configured with contexts for every Kubernetes cluster, allowing administrators and GitOps tooling to securely manage multiple environments from a single control plane.
+
+kubectl config get-contexts
+Screenshot
+![Multi-Cluster Verification](docs/screenshots/00-platform/multi-cluster-verification.png)
+
+Multi-Cluster Verification
+
+Verification of Platform, Development, Staging, Production, and Disaster Recovery Amazon EKS clusters using the AWS CLI and Kubernetes contexts. The screenshot confirms successful provisioning across multiple AWS Regions and demonstrates centralized management of all Kubernetes clusters through a unified kubeconfig.
+
+
+
+Multi-Cluster Verification
+
+Verification of Platform, Development, Staging, Production, and Disaster Recovery Amazon EKS clusters using the AWS CLI and Kubernetes contexts. The screenshot confirms successful provisioning across multiple AWS Regions and demonstrates centralized management of all Kubernetes clusters through a unified kubeconfig.
+
+Disaster Recovery Cluster
+
+The Disaster Recovery (DR) cluster is deployed in a separate AWS Region to provide regional resilience and business continuity. It mirrors the production environment and can be used to restore application services during a regional outage.
+
+Key Features
+
+Separate AWS Region deployment
+Production environment replica
+Business continuity
+Multi-region disaster recovery
+Independent Kubernetes control plane
+![Disaster Recovery Cluster](docs/screenshots/10-platform/dr-cluster-console.png)
+
+Amazon EKS console showing the Disaster Recovery cluster deployed in a separate AWS Region.
 # Automation Scripts
 
 | Script | Purpose |
