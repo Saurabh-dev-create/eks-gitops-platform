@@ -71,44 +71,59 @@ Independent Kubernetes control plane
 
 Amazon EKS console showing the Disaster Recovery cluster deployed in a separate AWS Region.
 
-Automation Scripts
+# Automation Scripts
 
-The platform is fully automated using Bash scripts that bootstrap the management platform and workload clusters independently. Scripts are organized by responsibility to support a production-grade multi-cluster architecture.
+The platform is fully automated using Bash scripts that bootstrap the Platform Cluster and Workload Clusters independently. Scripts are organized by responsibility to support a production-grade multi-cluster Kubernetes architecture.
 
-Script Organization
-Directory	Purpose
-scripts/platform-scripts/	Installs and configures the Platform Cluster (ArgoCD, Prometheus, Grafana, Loki, Tempo, OpenTelemetry).
-scripts/workload-scripts/	Bootstraps workload clusters with Ingress, Cert Manager, External Secrets, Argo Rollouts, Kyverno and OpenTelemetry.
-scripts/kind-scripts/	Legacy automation used during local Kind-based development and testing.
-scripts/cleanup.sh	Removes platform resources and cleans up the local development environment.
-Platform Bootstrap
+---
 
-Responsible for provisioning shared platform services.
+## Script Organization
 
-Script	Purpose
-bootstrap-platform.sh	Bootstraps the complete Platform Cluster
-01-metrics-server.sh	Installs Metrics Server
-02-argocd.sh	Installs ArgoCD
-03-monitoring.sh	Installs Prometheus, Grafana and Alertmanager
-04-loki.sh	Installs Loki
-05-tempo.sh	Installs Tempo
-06-opentelemetry.sh	Installs the OpenTelemetry Collector
-Workload Cluster Bootstrap
+| Directory | Purpose |
+|-----------|---------|
+| `scripts/platform-scripts/` | Installs and configures the Platform Cluster (ArgoCD, Prometheus, Grafana, Loki, Tempo, OpenTelemetry). |
+| `scripts/workload-scripts/` | Bootstraps Dev, Stage, Prod and Disaster Recovery clusters with workload-specific platform components. |
+| `scripts/kind-scripts/` | Legacy automation used for local Kind-based development and testing. |
+| `scripts/cleanup.sh` | Cleans up local development resources. |
 
-Installs platform components required by Dev, Stage, Prod and DR clusters.
+---
 
-Script	Purpose
-bootstrap-workload.sh	Bootstraps a workload cluster
-01-nginx-ingress.sh	Installs NGINX Ingress Controller
-02-cert-manager.sh	Installs Cert Manager
-03-external-secrets.sh	Installs External Secrets
-04-argo-rollouts.sh	Installs Argo Rollouts
-05-opentelemetry-agent.sh	Installs OpenTelemetry Agent
-06-kyverno.sh	Installs Kyverno
-07-verify-workload.sh	Verifies workload cluster readiness
-Configuration Management
+## Platform Cluster Bootstrap
 
-Helm values are maintained separately for each platform component to provide consistent and repeatable deployments across all Kubernetes clusters.
+Responsible for provisioning the centralized Platform Cluster.
+
+| Script | Purpose |
+|---------|---------|
+| `bootstrap-platform.sh` | Bootstraps the complete Platform Cluster |
+| `01-metrics-server.sh` | Installs Metrics Server |
+| `02-argocd.sh` | Installs ArgoCD |
+| `03-monitoring.sh` | Installs Prometheus, Grafana and Alertmanager |
+| `04-loki.sh` | Installs Loki |
+| `05-tempo.sh` | Installs Tempo |
+| `06-opentelemetry.sh` | Installs the OpenTelemetry Collector |
+
+---
+
+## Workload Cluster Bootstrap
+
+Responsible for provisioning Development, Staging, Production and Disaster Recovery clusters.
+
+| Script | Purpose |
+|---------|---------|
+| `bootstrap-workload.sh` | Bootstraps the complete Workload Cluster |
+| `01-nginx-ingress.sh` | Installs NGINX Ingress Controller |
+| `02-cert-manager.sh` | Installs Cert Manager |
+| `03-external-secrets.sh` | Installs External Secrets |
+| `04-argo-rollouts.sh` | Installs Argo Rollouts |
+| `05-opentelemetry-agent.sh` | Installs OpenTelemetry Agent |
+| `06-kyverno.sh` | Installs Kyverno |
+| `07-verify-workload.sh` | Verifies workload cluster readiness |
+
+---
+
+## Configuration Management
+
+Helm values for every platform component are maintained separately under the `values/` directories, ensuring consistent, repeatable and environment-specific deployments across all Kubernetes clusters.
 
 
 # Terraform Remote State Management
