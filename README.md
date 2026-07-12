@@ -18,7 +18,7 @@ Staging	Pre-production validation
 Production	Live production workloads
 Disaster Recovery	Multi-region production replica
 Screenshot
-![Amazon EKS Multi-Cluster Platform](docs/screenshots/10-platform/aws-eks-multi-clusters.png)
+![Amazon EKS Multi-Cluster Platform](docs/screenshots/10-platform/aws-eks-multi-cluster.png)
 
 Multi-Cluster Environment Verification
 
@@ -44,7 +44,7 @@ The local kubeconfig is configured with contexts for every Kubernetes cluster, a
 
 kubectl config get-contexts
 Screenshot
-![Multi-Cluster Verification](docs/screenshots/00-platform/multi-cluster-verification.png)
+![Multi-Cluster Verification](docs/screenshots/10-platform/multi-cluster-verification.png)
 
 Multi-Cluster Verification
 
