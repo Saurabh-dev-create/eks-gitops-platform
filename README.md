@@ -150,6 +150,28 @@ On-Demand
 ![DynamoDB Locking](docs/screenshots/00-terraform/dynamodb-lock.png)
 
 ---
+Terraform State Lock Management
+
+Terraform uses remote state locking to prevent concurrent infrastructure modifications. During infrastructure planning, Terraform detected an existing remote state lock and safely blocked the operation.
+
+The stale lock was removed after verifying that no other Terraform operation was running.
+
+terraform force-unlock <LOCK_ID>
+Benefits
+Prevents concurrent Terraform operations
+Protects remote state integrity
+Supports safe team collaboration
+Ensures production-grade Infrastructure as Code workflows
+
+Screenshot
+
+Terraform State Lock Management
+
+Detection of a remote Terraform state lock and recovery using terraform force-unlock while managing the production EKS infrastructure.
+
+![Terraform State Lock Management](docs/screenshots/00-terraform/terraform-state-lock.png)
+
+This concise version fits well between Amazon S3 Remote State and DynamoDB State Locking without interrupting the flow of your README.
 
 ## Production Benefits
 
