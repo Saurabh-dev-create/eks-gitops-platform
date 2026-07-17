@@ -606,6 +606,41 @@ Safer Application Releases
 
 This allows application updates to be validated before exposing them to production traffic, reducing deployment risk and minimizing downtime.
 
+### 🎥 Blue-Green Deployment End-to-End Demonstration
+
+This video demonstrates the complete GitOps-based Blue-Green deployment workflow implemented using **ArgoCD** and **Argo Rollouts** on Kubernetes.
+
+📹 **Deployment Demo**
+
+`docs/demo-videos/WhatsApp Video 2026-07-12 at 19.30.34.mp4`
+
+#### Demonstration Workflow
+
+The video walks through the complete release lifecycle:
+
+1. A new application version is committed to the Git repository.
+2. ArgoCD automatically detects the updated Git revision and synchronizes the Kubernetes manifests.
+3. Argo Rollouts creates a new **Preview ReplicaSet** while the existing application version continues serving production traffic.
+4. The rollout enters a **paused** state, allowing validation of the new release before exposing it to users.
+5. After verification, the rollout is manually promoted using the Argo Rollouts CLI.
+6. Production traffic is switched from the **Active Service** to the newly validated ReplicaSet without downtime.
+7. The previous ReplicaSet is automatically scaled down while remaining available for rollback during the transition.
+8. Final verification confirms that all platform components and GitOps applications are synchronized and running successfully.
+
+#### Production Capabilities Demonstrated
+
+- GitOps-driven application deployment
+- Automatic synchronization with ArgoCD
+- Progressive delivery using Argo Rollouts
+- Blue-Green deployment strategy
+- Preview environment validation
+- Manual approval before production release
+- Zero-downtime traffic switching
+- ReplicaSet-based rollout management
+- Automated post-deployment verification
+- Safe rollback-ready release process
+
+This demonstration represents a production-style release workflow where application changes are continuously delivered through GitOps while maintaining deployment safety, operational visibility, and high application availability.
 Blue-Green Deployment
 
 A Blue-Green deployment strategy was implemented using Argo Rollouts.
