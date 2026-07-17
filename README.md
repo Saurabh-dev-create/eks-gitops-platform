@@ -612,7 +612,7 @@ This video demonstrates the complete GitOps-based Blue-Green deployment workflow
 
 📹 **Deployment Demo**
 
-`docs/demo-videos/WhatsApp Video 2026-07-12 at 19.30.34.mp4`
+[▶️ Watch the Blue-Green Deployment Demo](docs/demo-videos/blue-green-deployment-demo.mp4)
 
 #### Demonstration Workflow
 
