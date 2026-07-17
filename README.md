@@ -610,9 +610,11 @@ This allows application updates to be validated before exposing them to producti
 
 This video demonstrates the complete GitOps-based Blue-Green deployment workflow implemented using **ArgoCD** and **Argo Rollouts** on Kubernetes.
 
-📹 **Deployment Demo**
+📹 **Blue-Green Deployment Demo**
 
-[▶️ Watch the Blue-Green Deployment Demo](docs/demo-videos/blue-green-deployment-demo.mp4)
+Click the video below to watch the complete deployment:
+
+[![Blue-Green Deployment](docs/screenshots/09-blue-green/blue-green-promotion-complete.png)](docs/demo-videos/blue-green-deployment-demo.mp4)
 
 #### Demonstration Workflow
 
