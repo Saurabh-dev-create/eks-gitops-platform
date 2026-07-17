@@ -614,7 +614,7 @@ This video demonstrates the complete GitOps-based Blue-Green deployment workflow
 
 Click the video below to watch the complete deployment:
 
-[![Blue-Green Deployment](docs/screenshots/09-blue-green/blue-green-promotion-complete.png)](docs/demo-videos/blue-green-deployment-demo.mp4)
+[![Blue-Green Deployment Demo](docs/screenshots/09-blue-green/blue-green-demo-thumbnail.png)](docs/demo-videos/blue-green-deployment-demo.mp4)
 
 #### Demonstration Workflow
 
