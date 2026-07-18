@@ -1,3 +1,9 @@
+#!/bin/bash
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 bash "${SCRIPT_DIR}/01-nginx-ingress.sh"
 
 bash "${SCRIPT_DIR}/02-cert-manager.sh"

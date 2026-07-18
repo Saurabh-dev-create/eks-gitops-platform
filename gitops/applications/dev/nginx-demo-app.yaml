@@ -6,7 +6,7 @@ metadata:
   namespace: argocd
 
 spec:
-  project: default
+  project: platform-project
 
   source:
     repoURL: https://github.com/Saurabh-dev-create/eks-gitops-platform.git
@@ -14,7 +14,7 @@ spec:
     path: apps/nginx-demo
 
   destination:
-    server: https://kubernetes.default.svc
+    server: https://2311337A4282C772727E2D169B637778.gr7.ap-south-1.eks.amazonaws.com
     namespace: default
 
   syncPolicy:
