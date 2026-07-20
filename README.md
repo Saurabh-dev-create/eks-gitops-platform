@@ -3,9 +3,102 @@
 Production-grade Platform Engineering stack implementing GitOps, observability, security policies, progressive delivery, and incident-ready operations on Kubernetes.
 Enterprise Multi-Cluster Kubernetes Platform
 
+<p align="center">
+
+<img src="https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white"/>
+<img src="https://img.shields.io/badge/Amazon%20EKS-FF9900?style=for-the-badge&logo=amazon-eks&logoColor=white"/>
+<img src="https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white"/>
+<img src="https://img.shields.io/badge/Terraform-7B42BC?style=for-the-badge&logo=terraform&logoColor=white"/>
+<img src="https://img.shields.io/badge/ArgoCD-EF7B4D?style=for-the-badge&logo=argo&logoColor=white"/>
+<img src="https://img.shields.io/badge/Argo%20Rollouts-FE6A16?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white"/>
+<img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"/>
+
+</p>
+
+<p align="center">
+
+<img src="https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=prometheus&logoColor=white"/>
+<img src="https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=grafana&logoColor=white"/>
+<img src="https://img.shields.io/badge/Loki-F2C037?style=for-the-badge&logo=grafana&logoColor=black"/>
+<img src="https://img.shields.io/badge/Tempo-F2C037?style=for-the-badge&logo=grafana&logoColor=black"/>
+<img src="https://img.shields.io/badge/OpenTelemetry-000000?style=for-the-badge&logo=opentelemetry&logoColor=white"/>
+<img src="https://img.shields.io/badge/Kyverno-326CE5?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/Falco-00ADEF?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white"/>
+
+</p>
+
+# Enterprise Platform Engineering on Amazon EKS
+
+Production-grade multi-cluster Kubernetes platform implementing:
+
+• GitOps (ArgoCD)
+• Progressive Delivery (Argo Rollouts)
+• Infrastructure as Code (Terraform)
+• Observability (Prometheus, Grafana, Loki, Tempo)
+• Runtime Security (Falco)
+• Policy Enforcement (Kyverno)
+• Multi-Region Disaster Recovery
+• Enterprise CI/CD
+
 This platform implements a production-grade multi-cluster Kubernetes architecture on Amazon EKS using Infrastructure as Code, GitOps, centralized observability, policy-driven security, and progressive delivery.
 
 The platform consists of a dedicated Platform Cluster that manages the Kubernetes platform and multiple environment clusters responsible for running application workloads across development, staging, production, and disaster recovery environments.
+
+                   Developers
+                        │
+                 GitHub Repository
+                        │
+                GitHub Actions CI
+                        │
+        Terraform + Kubernetes Manifests
+                        │
+                ArgoCD (Platform Cluster)
+                        │
+      ┌─────────────────┼──────────────────┐
+      │                 │                  │
+     Dev             Stage              Production
+      │                 │                  │
+      └─────────────────┼──────────────────┘
+                        │
+                  Disaster Recovery
+                 (Another AWS Region)
+
+──────────────────────────────────────────────
+
+Platform Cluster
+
+• Prometheus
+• Grafana
+• Loki
+• Tempo
+• Alertmanager
+• Argo Rollouts
+• Kyverno
+• Falco
+• External Secrets
+• cert-manager
+
+──────────────────────────────────────────────
+
+Applications
+
+Frontend
+API
+Auth
+Database
+
+──────────────────────────────────────────────
+
+Observability
+
+Metrics → Prometheus
+Logs → Loki
+Traces → Tempo
+Dashboards → Grafana
+Alerts → Slack
+
 
 Amazon EKS Clusters
 
