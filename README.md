@@ -483,6 +483,14 @@ Terraform provisions a production-ready Amazon EKS cluster including:
 
 *Successfully deployed the nginx-demo application using ArgoCD GitOps. The application is synchronized with the Git repository and automatically reconciled to the desired state stored in version control.*
 
+After checking nginx-demo is working smoothly all other apps auth ,api , database ,frontend has been deployed.
+
+## 🎥 GitOps Live Deployment Demo
+
+Click the thumbnail below to watch an end-to-end GitOps deployment from Git commit to production sync.
+
+[![GitOps Live Deployment Demo](docs/screenshots/gitops-live-deployment-thumbnail.png)](docs/demo-videos/gitops-live-deployment-demo.mp4)
+
 **Key Features Demonstrated**
 
 * Automated deployment through GitOps
