@@ -170,6 +170,12 @@ The platform is fully automated using Bash scripts that bootstrap the Platform C
 
 ---
 
+## 🎥 Complete Platform Deployment Walkthrough
+
+Click the preview below to watch the full installation on platform and workload clusters:
+
+[![Watch Platform Deployment Demo](docs/screenshots/platform-bootstrap-thumbnail.png)](docs/demo-videos/platform-bootstrap-demo.mp4)
+
 ## Script Organization
 
 | Directory | Purpose |
