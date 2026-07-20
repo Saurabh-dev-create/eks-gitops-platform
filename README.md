@@ -817,6 +817,12 @@ Argo Rollouts successfully created a new ReplicaSet and managed application pods
 
 ### Canary Deployment Initialization
 
+## 🎥 Canary Deployment Demo
+
+Watch a progressive delivery workflow where traffic is shifted gradually to the new application version while Kubernetes validates health at every stage.
+
+[![Canary Deployment Demo](docs/screenshots/canary-deployment-thumbnail.png)](docs/demo-videos/canary-deployment-demo.mp4)
+
 ![Canary Deployment](docs/screenshots/10-canary/canary-initial-deployment.png)
 
 *Argo Rollouts deployed a canary-enabled frontend application with four replicas. The rollout controller manages progressive traffic shifting and staged promotion of new versions, enabling safer production releases compared to standard Kubernetes rolling updates.*
