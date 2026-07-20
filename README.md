@@ -147,49 +147,9 @@ Verification of Platform, Development, Staging, Production, and Disaster Recover
 
 The **Platform Cluster** acts as the centralized management plane for all environment clusters. It hosts Argo CD, observability, and governance services, while the Dev, Stage, Prod, and DR clusters run environment-specific workloads and standardized platform components.
 
-                    Developers
-                         │
-                         ▼
-                 Git Repository
-            (GitOps Source of Truth)
-                         │
-                         ▼
-                PLATFORM CLUSTER
-          (Management / Control Plane)
-                         │
-       ┌─────────────────┼─────────────────┐
-       ▼                 ▼                 ▼
-     Argo CD       Monitoring Stack    Platform Services
-                   Metrics Server      Shared Management
-                   Prometheus
-                   Loki
-                   Tempo
-                   OpenTelemetry
-                         │
-                         ▼
-         Manages & Syncs All Environment Clusters
-                         │
- ┌────────────┬────────────┬────────────┬────────────┐
- ▼            ▼            ▼            ▼
-DEV         STAGE        PROD          DR
-(ap-s1)     (ap-s1)      (ap-s1)   (ap-se1)
- │            │            │            │
- ▼            ▼            ▼            ▼
-Workload Components (Installed on Every Environment)
-• NGINX Ingress
-• Cert Manager
-• External Secrets
-• Argo Rollouts
-• OpenTelemetry Agent
-• Kyverno
-                         │
-                         ▼
-            Application Workloads
-      Frontend • API • Auth • Database
-                         │
-                         ▼
-      Continuous Sync • Drift Detection
-       Self-Healing • Disaster Recovery
+
+
+![Platform Cluster Management Flow](docs/screenshots/platform-cluster-management-flow.png)
 
                         
 Disaster Recovery Cluster
