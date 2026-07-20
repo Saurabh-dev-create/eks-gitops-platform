@@ -160,6 +160,51 @@ Key Features
 
 Separate AWS Region deployment
 Production environment replica
+                   Metrics Server      Shared Management
+                   Prometheus
+                   Loki
+                   Tempo
+                   OpenTelemetry
+                         │
+                         ▼
+         Manages & Syncs All Environment Clusters
+                         │
+ ┌────────────┬────────────┬────────────|
+ ▼            ▼            ▼            ▼
+DEV         STAGE        PROD          DR
+(ap-s1)     (ap-s1)      (ap-s1)   (ap-se1)
+ │            │            │            │
+ ▼            ▼            ▼            ▼
+Workload Components (Installed on Every Environment)
+• NGINX Ingress
+• Cert Manager
+• External Secrets
+• Argo Rollouts
+• OpenTelemetry Agent
+• Kyverno
+                         │
+                         ▼
+            Application Workloads
+      Frontend • API • Auth • Database
+                         │
+                         ▼
+      Continuous Sync • Drift Detection
+       Self-Healing • Disaster Recovery
+
+### 🎯 Platform Cluster Managing Remote Environment
+
+The Platform Cluster hosts Argo CD, which continuously manages application deployments across remote Amazon EKS environment clusters through GitOps. The screenshot below shows Argo CD running on the Platform Cluster deploying and synchronizing an application to the **Development EKS cluster**, demonstrating centralized multi-cluster management.
+
+![ArgoCD Remote Cluster Management](docs/screenshots/10-platform/argocd-remote-cluster-management.png)
+                        
+Disaster Recovery Cluster
+
+The Disaster Recovery (DR) cluster is deployed in a separate AWS Region to provide regional resilience and business continuity. It mirrors the production environment and can be used to restore application services during a regional outage.
+
+Key Features
+
+Separate AWS Region deployment
+Production environment replica
 Business continuity
 Multi-region disaster recovery
 Independent Kubernetes control plane
@@ -213,46 +258,6 @@ Click the preview below to watch the full installation on platform and workload 
 
 [![Watch Platform Deployment Demo](docs/screenshots/platform-bootstrap-thumbnail.png)](docs/demo-videos/platform-bootstrap-demo.mp4)
 
-## Script Organization
-
-| Directory | Purpose |
-|-----------|---------|
-| `scripts/platform-scripts/` | Installs and configures the Platform Cluster (ArgoCD, Prometheus, Grafana, Loki, Tempo, OpenTelemetry). |
-| `scripts/workload-scripts/` | Bootstraps Dev, Stage, Prod and Disaster Recovery clusters with workload-specific platform components. |
-| `scripts/kind-scripts/` | Legacy automation used for local Kind-based development and testing. |
-| `scripts/cleanup.sh` | Cleans up local development resources. |
-
----
-
-## Platform Cluster Bootstrap
-
-Responsible for provisioning the centralized Platform Cluster.
-
-| Script | Purpose |
-|---------|---------|
-| `bootstrap-platform.sh` | Bootstraps the complete Platform Cluster |
-| `01-metrics-server.sh` | Installs Metrics Server |
-| `02-argocd.sh` | Installs ArgoCD |
-| `03-monitoring.sh` | Installs Prometheus, Grafana and Alertmanager |
-| `04-loki.sh` | Installs Loki |
-| `05-tempo.sh` | Installs Tempo |
-| `06-opentelemetry.sh` | Installs the OpenTelemetry Collector |
-
----
-
-## Workload Cluster Bootstrap
-
-Responsible for provisioning Development, Staging, Production and Disaster Recovery clusters.
-
-| Script | Purpose |
-|---------|---------|
-| `bootstrap-workload.sh` | Bootstraps the complete Workload Cluster |
-| `01-nginx-ingress.sh` | Installs NGINX Ingress Controller |
-| `02-cert-manager.sh` | Installs Cert Manager |
-| `03-external-secrets.sh` | Installs External Secrets |
-| `04-argo-rollouts.sh` | Installs Argo Rollouts |
-| `05-opentelemetry-agent.sh` | Installs OpenTelemetry Agent |
-| `06-kyverno.sh` | Installs Kyverno |
 | `07-verify-workload.sh` | Verifies workload cluster readiness |
 
 ---
@@ -942,3 +947,43 @@ Kubernetes → Prometheus → Alertmanager → Slack
 | Prometheus Alert | Slack Notification |
 |------------------|--------------------|
 | ![](docs/screenshots/14-security/prometheus-alert-firing.png) | ![](docs/screenshots/14-security/slack-notification.png) |
+# Enterprise Platform Engineering
+
+Production-grade Platform Engineering stack implementing GitOps, observability, security policies, progressive delivery, and incident-ready operations on Kubernetes.
+Enterprise Multi-Cluster Kubernetes Platform
+
+<p align="center">
+
+<img src="https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white"/>
+<img src="https://img.shields.io/badge/Amazon%20EKS-FF9900?style=for-the-badge&logo=amazon-eks&logoColor=white"/>
+<img src="https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white"/>
+<img src="https://img.shields.io/badge/Terraform-7B42BC?style=for-the-badge&logo=terraform&logoColor=white"/>
+<img src="https://img.shields.io/badge/ArgoCD-EF7B4D?style=for-the-badge&logo=argo&logoColor=white"/>
+<img src="https://img.shields.io/badge/Argo%20Rollouts-FE6A16?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white"/>
+<img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"/>
+
+</p>
+
+<p align="center">
+
+<img src="https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=prometheus&logoColor=white"/>
+<img src="https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=grafana&logoColor=white"/>
+<img src="https://img.shields.io/badge/Loki-F2C037?style=for-the-badge&logo=grafana&logoColor=black"/>
+<img src="https://img.shields.io/badge/Tempo-F2C037?style=for-the-badge&logo=grafana&logoColor=black"/>
+<img src="https://img.shields.io/badge/OpenTelemetry-000000?style=for-the-badge&logo=opentelemetry&logoColor=white"/>
+<img src="https://img.shields.io/badge/Kyverno-326CE5?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/Falco-00ADEF?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white"/>
+
+</p>
+
+# Enterprise Platform Engineering on Amazon EKS
+
+Production-grade multi-cluster Kubernetes platform implementing:
+
+• GitOps (ArgoCD)
+• Progressive Delivery (Argo Rollouts)
+• Infrastructure as Code (Terraform)
+• Observability (Prometheus, Grafana, Loki, Tempo)
+• Runtime Security (Falco)
