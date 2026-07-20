@@ -705,16 +705,11 @@ Safer Application Releases
 
 This allows application updates to be validated before exposing them to production traffic, reducing deployment risk and minimizing downtime.
 
-### 🎥 Blue-Green Deployment End-to-End Demonstration
+## 🎥 Blue-Green Deployment Demo
 
-This video demonstrates the complete GitOps-based Blue-Green deployment workflow implemented using **ArgoCD** and **Argo Rollouts** on Kubernetes.
+Click the thumbnail below to watch the complete GitOps-driven Blue-Green deployment.
 
-📹 **Blue-Green Deployment Demo**
-
-Click the video below to watch the complete deployment:
-
-[![Blue-Green Deployment Demo](docs/screenshots/09-blue-green/blue-green-demo-thumbnail.png)](docs/demo-videos/blue-green-deployment-demo.mp4)
-
+[![Blue-Green Deployment Demo](docs/screenshots/blue-green-thumbnail.png)](docs/demo-videos/blue-green-deployment-demo.mp4)
 #### Demonstration Workflow
 
 The video walks through the complete release lifecycle:
