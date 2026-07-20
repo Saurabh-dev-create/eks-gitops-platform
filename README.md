@@ -143,12 +143,63 @@ Multi-Cluster Verification
 
 Verification of Platform, Development, Staging, Production, and Disaster Recovery Amazon EKS clusters using the AWS CLI and Kubernetes contexts. The screenshot confirms successful provisioning across multiple AWS Regions and demonstrates centralized management of all Kubernetes clusters through a unified kubeconfig.
 
+### 🧭 Centralized Multi-Cluster Management
+
+The **Platform Cluster** acts as the centralized management plane for all environment clusters. It hosts Argo CD, observability, and governance services, while the Dev, Stage, Prod, and DR clusters run environment-specific workloads and standardized platform components.
 
 
-Multi-Cluster Verification
 
-Verification of Platform, Development, Staging, Production, and Disaster Recovery Amazon EKS clusters using the AWS CLI and Kubernetes contexts. The screenshot confirms successful provisioning across multiple AWS Regions and demonstrates centralized management of all Kubernetes clusters through a unified kubeconfig.
-
+                         PLATFORM ENGINEERS
+                                 │
+                                 ▼
+                         Git Repository
+                    (GitOps Source of Truth)
+                                 │
+                                 ▼
+                    PLATFORM CLUSTER
+                    Management / Control Plane
+                                 │
+            ┌────────────────────-
+            │                    │                    
+            ▼                    ▼                    
+         Argo CD          Observability Stack   
+                           Prometheus            
+                           Grafana
+                           Loki                  
+                           Tempo
+                           OpenTelemetry
+                                 │
+                                 ▼
+              Manages and synchronizes all clusters
+                       through Argo CD
+                                 │
+        ┌────────────────────────┼────────────────────────┬───────────────────────┐
+        │                        │                        │                       │
+        ▼                        ▼                        ▼                       ▼
+   DEV CLUSTER              STAGE CLUSTER            PROD CLUSTER          DR CLUSTER
+   ap-south-1               ap-south-1               ap-south-1           ap-southeast-1
+        │                        │                        │                       │
+        ▼                        ▼                        ▼                       ▼
+   Platform Components      Platform Components      Platform Components    Platform Components
+   - NGINX Ingress          - NGINX Ingress          - NGINX Ingress       - NGINX Ingress
+   - Cert Manager           - Cert Manager           - Cert Manager        - Cert Manager
+   - External Secrets       - External Secrets       - External Secrets    - External Secrets
+   - Argo Rollouts          - Argo Rollouts          - Argo Rollouts       - Argo Rollouts
+   - OTel Agent             - OTel Agent             - OTel Agent          - OTel Agent
+   - Kyverno                - Kyverno                - Kyverno             - Kyverno
+        │                        │                        │                       │
+        ▼                        ▼                        ▼                       ▼
+   Application Stack        Application Stack        Application Stack      Replicated Prod Stack
+   - Frontend               - Frontend               - Frontend             - Frontend
+   - API                    - API                    - API                  - API
+   - Auth                   - Auth                   - Auth                 - Auth
+   - Database               - Database               - Database             - Database
+        │                        │                        │                       │
+        └────────────────────────┴────────────────────────┴───────────────────────┘
+                                 │
+                                 ▼
+                  Continuous Sync + Drift Detection
+                       Self-Healing via Argo CD
 Disaster Recovery Cluster
 
 The Disaster Recovery (DR) cluster is deployed in a separate AWS Region to provide regional resilience and business continuity. It mirrors the production environment and can be used to restore application services during a regional outage.
@@ -163,6 +214,40 @@ Independent Kubernetes control plane
 ![Disaster Recovery Cluster](docs/screenshots/10-platform/dr-cluster-console.png)
 
 Amazon EKS console showing the Disaster Recovery cluster deployed in a separate AWS Region.
+
+### 🌍 Multi-Region Disaster Recovery
+
+To improve platform resilience, the production environment is deployed in **Mumbai (ap-south-1)** with a dedicated **Disaster Recovery (DR)** environment in **Singapore (ap-southeast-1)**. Amazon Route 53 continuously performs health checks against the primary endpoint. If the production environment becomes unavailable, Route 53 automatically redirects user traffic to the replicated DR cluster, minimizing downtime and enabling rapid service recovery.
+
+                 Users
+                   │
+                   ▼
+              Amazon Route 53
+             (Health Check)
+                   │
+         ┌─────────┴─────────┐
+         │                   │
+         ▼                   ▼
+  PROD CLUSTER          DR CLUSTER
+ Mumbai (ap-south-1)  Singapore (ap-southeast-1)
+      Active              Standby
+         │                   ▲
+         │ Replication       │
+         └───────────────────┘
+
+        ❌ Primary Failure
+               │
+               ▼
+      Route 53 detects failure
+               │
+               ▼
+      DNS automatically updated
+               │
+               ▼
+      Traffic routed to DR
+               │
+               ▼
+ Users experience only minimal downtime
 
 # Automation Scripts
 
@@ -471,11 +556,6 @@ Terraform provisions a production-ready Amazon EKS cluster including:
 
 *Fresh Kubernetes cluster showing only core system components before platform bootstrap, ensuring a clean and reproducible GitOps setup.*
 
-### ArgoCD Bootstrap
-
-![ArgoCD Components](docs/screenshots/02-argocd/argocd-components-running.png)
-
-*Successfully deployed ArgoCD as the GitOps control plane. Verified that all core components—including the API server, application controller, repository server, Redis, Dex, notifications controller, and ApplicationSet controller—are running and healthy.*
 
 ### GitOps Application Deployment
 
